@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: petshop-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+   - http:
+      paths: 
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Release.Name }}-products-service
+            port: 
+              number: {{ .Values.products.service.port }}
+      - path: /orders
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Release.Name }}-orders-service
+            port: 
+              number: {{ .Values.orders.service.port }}

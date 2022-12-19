@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-orders-deployment
+  labels:
+    app: {{ .Values.orders.label.name }}
+spec:
+  replicas: {{ .Values.orders.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.orders.label.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.orders.label.name }}
+        environment: {{ .Values.environment }}
+    spec:
+      containers:
+        - name: {{ .Values.orders.container.name }}
+          image: {{ .Values.orders.container.image }}:{{ .Values.orders.container.tag }}
+          imagePullPolicy: {{ .Values.orders.container.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.orders.container.port }}
+          env:
+            - name: apphost
+              value: {{ .Values.apphost }}
+            - name: appenvironment
+              value: {{ .Values.environment }}

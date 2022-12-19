@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-productapi-deployment
+  labels:
+    app: {{ .Values.productapi.label.name }}
+spec:
+  replicas: {{ .Values.productapi.replicas }}
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.productapi.label.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.productapi.label.name }}
+        environment: {{ .Values.environment }}
+        version: {{ .Values.productapi.label.version }}
+    spec:
+      tolerations:
+        - key: "app"
+          operator: "Equal"
+          value: "run"
+          effect: "NoExecute"
+      containers:
+        - name: {{ .Values.productapi.container.name }}
+          image: {{ .Values.productapi.container.image }}:{{ .Values.productapi.container.tag }}
+          imagePullPolicy: {{ .Values.productapi.container.pullPolicy }}
+
+          ports:
+            - containerPort: {{ .Values.productapi.container.port }}
+          env:
+            - name: apphost
+              value: {{ .Values.apphost }}
+            - name: appenvironment
+              value: {{ .Values.environment }}
+            - name: secretname 
+              valueFrom: 
+                secretKeyRef: 
+                  name: my-secret
+                  key: secret
+                      
+          livenessProbe:
+            timeoutSeconds: 10
+            failureThreshold: 1  
+            httpGet:
+              path: /health/liveness
+              port: {{ .Values.productapi.container.port }}     
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            timeoutSeconds: 5
+            successThreshold: 3
+            failureThreshold: 10
+            httpGet:
+              path: /health/readiness
+              port: {{ .Values.productapi.container.port }} 
+            initialDelaySeconds: 5
+            periodSeconds: 5

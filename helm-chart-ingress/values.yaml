@@ -1,0 +1,36 @@
+environment: development
+
+apphost: k8s
+
+products:
+  label:
+    name: aspnet3core
+    
+
+  container:
+    name: aspnet3
+    pullPolicy: IfNotPresent
+    image: karthik3030/petshopproducts
+    tag: latest
+    port: 80
+  replicas: 3
+
+  service:
+    port: 8888
+    type: NodePort
+
+orders:
+  label:
+    name: aspnet3core
+
+  container:
+    name: aspnet3-orders
+    pullPolicy: IfNotPresent
+    image: karthik3030/petshoporders
+    tag: latest
+    port: 80
+  replicas: 3
+
+  service:
+    port: 8889
+    type: NodePort

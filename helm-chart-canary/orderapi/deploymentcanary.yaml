@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-orderapi-deployment
+  namespace: {{.Values.namespace}}
+  labels:
+    app: {{ .Values.orderapi.label.name }}
+spec:
+  replicas: {{ .Values.orderapi.replicas }}
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.orderapi.label.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.orderapi.label.name }}
+        environment: {{ .Values.environment }}
+        version: {{ .Values.orderapi.label.version }}-canary
+    spec:
+      tolerations:
+        - key: "app"
+          operator: "Equal"
+          value: "run"
+          effect: "NoExecute"
+      containers:
+        - name: {{ .Values.orderapi.container.name }}
+          image: {{ .Values.orderapi.container.image }}:{{ .Values.orderapi.container.canarytag }}
+          imagePullPolicy: {{ .Values.orderapi.container.pullPolicy }}
+          resources:
+            limits:
+              memory: "400Mi"
+              cpu: ".25"
+            requests:
+              memory: "200Mi"
+              cpu: ".2"
+          ports:
+            - containerPort: {{ .Values.orderapi.container.port }}
+          env:
+            - name: apphost
+              value: {{ .Values.apphost }}
+            - name: appenvironment
+              value: {{ .Values.environment }}                              
+          livenessProbe:
+            timeoutSeconds: 10
+            failureThreshold: 1  
+            httpGet:
+              path: /health/liveness
+              port: {{ .Values.orderapi.container.port }}     
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            timeoutSeconds: 5
+            successThreshold: 3
+            failureThreshold: 10
+            httpGet:
+              path: /health/readiness
+              port: {{ .Values.orderapi.container.port }} 
+            initialDelaySeconds: 5
+            periodSeconds: 5

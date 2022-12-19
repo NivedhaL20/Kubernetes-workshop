@@ -1,0 +1,21 @@
+environment: development
+namespace: mynamespace
+host: myhostname.com
+
+apphost: k8s
+
+orderapi:
+  label:
+    name: orderapi
+    version: stage
+
+  container:
+    name: orderapi
+    pullPolicy: Always
+    image:
+    port: 80
+  replicas: 1
+
+  service:
+    port: 8887
+    type: ClusterIP

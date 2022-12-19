@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-orders-service
+  labels:
+    app: {{ .Values.orders.label.name }}
+spec:
+  ports:
+  - port: {{ .Values.orders.service.port }}
+    protocol: TCP
+    targetPort: {{ .Values.orders.container.port }}
+  selector:
+    app: {{ .Values.orders.label.name }}
+  type: {{ .Values.orders.service.type }}
