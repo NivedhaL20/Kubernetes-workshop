@@ -4,13 +4,12 @@ apphost: k8s
 
 products:
   label:
-    name: aspnet3core
-    
+    name: products
 
   container:
-    name: aspnet3
-    pullPolicy: IfNotPresent
-    image: karthik3030/petshopproducts
+    name: products
+    pullPolicy: Always
+    image: demokubernetesworkshopacr.azurecr.io/petshoporders
     tag: latest
     port: 80
   replicas: 3
@@ -21,12 +20,12 @@ products:
 
 orders:
   label:
-    name: aspnet3core
+    name: orders
 
   container:
-    name: aspnet3-orders
-    pullPolicy: IfNotPresent
-    image: karthik3030/petshoporders
+    name: orders
+    pullPolicy: Always
+    image: demokubernetesworkshopacr.azurecr.io/petshoporders
     tag: latest
     port: 80
   replicas: 3

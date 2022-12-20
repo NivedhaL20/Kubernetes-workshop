@@ -10,13 +10,13 @@ spec:
     - istio-my-service-gateway/istio-my-gateway    # gateway name preceded by namespace
   http: 
   - match: 
-    - headers: 
-        canary: # any value like key value pair. - "canary" is a key. 
-          exact: "true" # when its "true" it will pick the below destination. 
-    route: 
-    - destination: 
-        host: {{ .Release.Name }}-productapi-service.{{.Values.namespace}}.svc.cluster.local    #service-name.namespace.svc.cluster.local 
-        subset: canary-subset
+    # - headers: 
+    #     canary: # any value like key value pair. - "canary" is a key. 
+    #       exact: "true" # when its "true" it will pick the below destination. 
+    # route: 
+    # - destination: 
+    #     host: {{ .Release.Name }}-productapi-service.{{.Values.namespace}}.svc.cluster.local    #service-name.namespace.svc.cluster.local 
+    #     subset: canary-subset
  
 
   - route: 

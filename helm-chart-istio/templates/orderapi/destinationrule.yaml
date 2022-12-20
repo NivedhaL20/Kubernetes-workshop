@@ -9,6 +9,6 @@ spec:
     - name: production-subset
       labels: #selector
         version: {{ .Values.orderapi.label.version }} #find pod with label 
-    - name: canary-subset      
-      labels:
-        version: {{ .Values.orderapi.label.version }}-canary
+    # - name: canary-subset      
+    #   labels:
+    #     version: {{ .Values.orderapi.label.version }}-canary
