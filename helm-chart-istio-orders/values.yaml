@@ -20,20 +20,3 @@ orderapi:
   service:
     port: 8887
     type: ClusterIP
-
-productapi:
-  label:
-    name: productapi
-    version: stage
-
-  container:
-    name: productapi
-    pullPolicy: Always
-    image: demokubernetesworkshopacr.azurecr.io/petshopproducts
-    tag: latest
-    port: 80
-  replicas: 1
-
-  service:
-    port: 8887
-    type: ClusterIP
