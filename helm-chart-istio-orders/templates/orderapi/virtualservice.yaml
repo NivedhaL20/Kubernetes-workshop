@@ -5,11 +5,11 @@ metadata:
   namespace: {{.Values.namespace}}
 spec:
   hosts:
-    - {{.Values.host}} # copy the value in the gateway hosts
+    - "*" # copy the value in the gateway hosts
   gateways:
-    - istio-my-service-gateway/istio-my-gateway    # gateway name preceded by namespace
+    - istio-my-gateway/istio-my-gateway    # gateway name preceded by namespace
   http: 
-  - match: 
+  # - match: 
     # - headers: 
     #     canary: # any value like key value pair. - "canary" is a key. 
     #       exact: "true" # when its "true" it will pick the below destination. 
