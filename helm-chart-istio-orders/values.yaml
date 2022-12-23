@@ -1,6 +1,6 @@
 environment: development
-namespace: mynamespace
-host: myhostname.com
+namespace: order-api
+host: "*"
 
 apphost: k8s
 

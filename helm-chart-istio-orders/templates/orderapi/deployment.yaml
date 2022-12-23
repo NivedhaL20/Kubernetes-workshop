@@ -34,26 +34,8 @@ spec:
               value: {{ .Values.apphost }}
             - name: appenvironment
               value: {{ .Values.environment }}
-            - name: secretname 
+            - name: DbConnectionString__DefaultConnection 
               valueFrom: 
                 secretKeyRef: 
-                  name: my-secret
-                  key: secret
-                      
-          livenessProbe:
-            timeoutSeconds: 10
-            failureThreshold: 1  
-            httpGet:
-              path: /health/liveness
-              port: {{ .Values.orderapi.container.port }}     
-            initialDelaySeconds: 5
-            periodSeconds: 5
-          readinessProbe:
-            timeoutSeconds: 5
-            successThreshold: 3
-            failureThreshold: 10
-            httpGet:
-              path: /health/readiness
-              port: {{ .Values.orderapi.container.port }} 
-            initialDelaySeconds: 5
-            periodSeconds: 5
+                  name: order-secret
+                  key: DbConnectionString__DefaultConnection
